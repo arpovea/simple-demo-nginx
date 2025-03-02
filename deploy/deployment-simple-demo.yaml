@@ -1,0 +1,50 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mi-nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mi-nginx
+  template:
+    metadata:
+      labels:
+        app: mi-nginx
+    spec:
+      volumes:
+      - name: html-volume
+        emptyDir: {}
+      - name: html-config
+        configMap:
+          name: cm-html
+      initContainers:
+      - name: process-html
+        image: 'registry.access.redhat.com/ubi8:latest'
+        env:
+        - name: VERSION
+          valueFrom:
+            configMapKeyRef:
+              name: cm-versions
+              key: VERSION
+        volumeMounts:
+        - name: html-volume
+          mountPath: /work
+        - name: html-config
+          mountPath: /config
+        command: ["/bin/sh"]
+        args:
+          - "-c"
+          - |
+            # Copiamos el index.html desde el configmap al volumen efímero
+            cp /config/index.html /work/index.html
+            # Sustituimos el placeholder con el valor de la variable de entorno
+            sed -i "s|{{VERSION}}|$VERSION|g" /work/index.html
+      containers:
+      - name: nginx
+        image: "arpovea/simple-demo-nginx:latest"
+        volumeMounts:
+        - name: html-volume
+          mountPath: /usr/share/nginx/html
+        ports:
+        - containerPort: 80

@@ -1,0 +1,12 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  name: rt-simple-demo
+  labels:
+    app: mi-nginx
+spec:
+  to:
+    kind: Service
+    name: svc-simple-demo
+  port:
+    targetPort: http

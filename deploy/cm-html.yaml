@@ -1,0 +1,54 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: cm-html
+data:
+  index.html: |
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+      <meta charset="UTF-8" />
+      <title0>Simple Demo Nginx</title>
+      <style>
+        body {
+          background-color: #ffffff;
+          margin: 0;
+          padding: 0;
+          font-family: Arial, sans-serif;
+        }
+        header {
+          background-color: #f1f1f1;
+          padding: 10px;
+          text-align: center;
+        }
+        header img {
+          max-height: 80px;
+        }
+        .version {
+          margin: 50px auto;
+          text-align: center;
+          font-size: 24px;
+        }
+        footer {
+          background-color: #f1f1f1;
+          padding: 10px;
+          position: fixed;
+          bottom: 0;
+          width: 100%;
+          text-align: center;
+        }
+      </style>
+    </head>
+    <body>
+      <header>
+        <!-- Reemplaza la URL por la de tu imagen deseada si lo prefieres -->
+        <img src="https://blog.arpovea.com/img/logo-arpovea.png" alt="Header Image" />
+      </header>
+      <div class="version">
+        Versión: {{VERSION}}
+      </div>
+      <footer>
+        Simple demo Nginx ARPOVEA
+      </footer>
+    </body>
+    </html>
